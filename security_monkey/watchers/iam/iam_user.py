@@ -41,10 +41,10 @@ class IAMUser(Watcher):
         return [user for user in users if not self.check_ignore_list(user['UserName'])]
 
     @record_exception(source="iamuser-watcher")
-    def process_user(self, user, user_name, **kwargs):
+    def process_user(self, user, **kwargs):
         app.logger.debug("Slurping {index} ({name}) from {account}".format(
             index=self.i_am_singular,
-            name=user_name,
+            name=kwargs['name'],
             account=kwargs['account_name']))
         return get_user(user, **kwargs)
 
@@ -64,7 +64,7 @@ class IAMUser(Watcher):
             users = self.list_users(**kwargs)
 
             for user in users:
-                user = self.process_user(user, user['UserName'], **kwargs)
+                user = self.process_user(user, name=user['UserName'], **kwargs)
                 item = self.cast_to_item(user, **kwargs)
                 item_list.append(item)
 

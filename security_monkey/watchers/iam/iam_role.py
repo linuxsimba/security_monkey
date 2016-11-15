@@ -41,10 +41,10 @@ class IAMRole(Watcher):
         return [role for role in roles if not self.check_ignore_list(role['RoleName'])]
 
     @record_exception(source="iamrole-watcher")
-    def process_role(self, role, role_name, **kwargs):
+    def process_role(self, role, **kwargs):
         app.logger.debug("Slurping {index} ({name}) from {account}".format(
             index=self.i_am_singular,
-            name=role_name,
+            name=kwargs['name'],
             account=kwargs['account_name']))
         return get_role(role, **kwargs)
 
@@ -64,7 +64,7 @@ class IAMRole(Watcher):
             roles = self.list_roles(**kwargs)
 
             for role in roles:
-                role = self.process_role(role, role['RoleName'], **kwargs)
+                role = self.process_role(role, name=role['RoleName'], **kwargs)
                 item = self.cast_to_item(role, **kwargs)
                 item_list.append(item)
 
