@@ -15,12 +15,13 @@ from setuptools import setup
 
 setup(
     name='security_monkey',
-    version='0.6.0',
+    version='0.7.0',
     long_description=__doc__,
     packages=['security_monkey'],
     include_package_data=True,
     zip_safe=False,
     install_requires=[
+        'Jinja2>=2.8',
         'APScheduler==2.1.2',
         'Flask==0.10.1',
         'Flask-Login==0.2.10',
@@ -32,7 +33,6 @@ setup(
         'Flask-Script==0.6.3',
         'Flask-Security==1.7.4',
         'Flask-WTF==0.9.5',
-        'Jinja2==2.7.2',
         'SQLAlchemy==0.9.2',
         'boto>=2.41.0',
         'ipaddr==2.1.11',
