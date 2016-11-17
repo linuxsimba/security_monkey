@@ -13,7 +13,7 @@ RUN git clone https://github.com/linuxsimba/security_monkey /usr/local/src/secur
 
 WORKDIR /usr/local/src/security_monkey
 
-RUN git checkout tags/v0.7.1 -b v0.7.1
+RUN git checkout tags/v0.7.2 -b v0.7.2
 
 RUN python setup.py bdist_wheel
 RUN pip install dist/*
