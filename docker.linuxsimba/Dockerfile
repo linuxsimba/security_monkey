@@ -28,11 +28,13 @@ RUN mkdir /var/log/security_monkey &&\
 
 RUN cp supervisor/security_monkey.conf /etc/supervisor/conf.d/security_monkey.conf
 
-ADD ./config-deploy.py.docker /usr/local/src/security_monkey/env-config/config-deploy.py
+ADD ./config-deploy.py.noaws /usr/local/src/security_monkey/env-config/config-deploy.py
 
 
 COPY docker-entrypoint.sh /
 
 # for testing only
-CMD tail -f /etc/hosts
-# ENTRYPOINT ["/docker-entrypoint.sh"]
+# CMD tail -f /etc/hosts
+
+
+CMD ["/docker-entrypoint.sh"]
