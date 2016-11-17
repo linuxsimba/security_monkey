@@ -217,7 +217,7 @@ def _parse_accounts(account_str):
 
 
 class APIServer(Command):
-    def __init__(self, host='127.0.0.1', port=app.config.get('API_PORT'), workers=6):
+    def __init__(self, host=app.config.get('FQDN'), port=app.config.get('API_PORT'), workers=6):
         self.address = "{}:{}".format(host, port)
         self.workers = workers
 
