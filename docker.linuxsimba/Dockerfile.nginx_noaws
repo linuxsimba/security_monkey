@@ -1,0 +1,12 @@
+FROM nginx:stable-alpine
+MAINTAINER stanley@linuxsimba.com
+
+RUN apk add --no-cache git
+
+RUN git clone https://github.com/linuxsimba/security_monkey /usr/local/src/security_monkey
+
+WORKDIR /usr/local/src/security_monkey
+
+RUN git checkout tags/v0.7.2 -b v0.7.2
+
+COPY nginx.conf /etc/nginx/nginx.conf

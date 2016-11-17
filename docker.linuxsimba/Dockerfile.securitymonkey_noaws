@@ -36,5 +36,4 @@ COPY docker-entrypoint.sh /
 # for testing only
 # CMD tail -f /etc/hosts
 
-
 CMD ["/docker-entrypoint.sh"]

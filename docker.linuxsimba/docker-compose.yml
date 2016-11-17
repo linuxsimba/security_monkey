@@ -20,10 +20,24 @@ services:
     networks:
       - securitymonkey_net
   securitymonkey:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.securitymonkey_noaws
     image: linuxsimba/securitymonkey
     networks:
       - securitymonkey_net
     container_name: securitymonkey
     depends_on:
       - postgres
+  nginx:
+    depends_on:
+      - securitymonkey
+    networks:
+      - securitymonkey_net
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx_noaws
+    container_name: nginx-securitymonkey
+    image: linuxsimba/nginx-securitymonkey
+    ports:
+      - "8100:80"
