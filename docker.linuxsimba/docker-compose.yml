@@ -40,4 +40,4 @@ services:
     container_name: nginx-securitymonkey
     image: linuxsimba/nginx-securitymonkey
     ports:
-      - "8100:80"
+      - "443:443"
