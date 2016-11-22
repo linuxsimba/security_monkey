@@ -9,17 +9,17 @@ RUN apt-get update && \
     libffi-dev libpq-dev libxml2-dev libxmlsec1-dev supervisor libpq5
 
 
-RUN git clone https://github.com/linuxsimba/security_monkey /usr/local/src/security_monkey
+RUN git clone --branch noaws https://github.com/linuxsimba/security_monkey /usr/local/src/security_monkey
 
 WORKDIR /usr/local/src/security_monkey
 
-RUN git checkout tags/v0.7.4 -b v0.7.4
 
 RUN python setup.py bdist_wheel
 RUN pip install dist/*
 
 RUN apt-get purge -y git build-essential python-dev libyaml-dev \
     libffi-dev libpq-dev libxml2-dev libxmlsec1-dev && \
+  apt-get -y -q install libxmlsec1-openssl vim net-tools && \
   apt-get -y autoremove && \
   apt-get clean
 
@@ -30,8 +30,15 @@ RUN cp supervisor/security_monkey.conf /etc/supervisor/conf.d/security_monkey.co
 
 ADD ./config-deploy.py.noaws /usr/local/src/security_monkey/env-config/config-deploy.py
 
+ADD ./dockerize /usr/local/bin/dockerize
+
+ADD ./minimum_datapush.py /usr/local/src/security_monkey/minimum_datapush.py
+
+RUN chmod 755 /usr/local/bin/dockerize
 
 COPY docker-entrypoint.sh /
+
+ENV SECURITY_MONKEY_SETTINGS /usr/local/src/security_monkey/env-config/config-deploy.py
 
 # for testing only
 # CMD tail -f /etc/hosts

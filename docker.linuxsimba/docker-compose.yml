@@ -25,7 +25,8 @@ services:
       dockerfile: Dockerfile.securitymonkey_noaws
     image: linuxsimba/securitymonkey
     networks:
-      - securitymonkey_net
+      securitymonkey_net:
+        ipv4_address: 192.168.202.3
     container_name: securitymonkey
     depends_on:
       - postgres
@@ -40,4 +41,4 @@ services:
     container_name: nginx-securitymonkey
     image: linuxsimba/nginx-securitymonkey
     ports:
-      - "8100:80"
+      - "443:443"
