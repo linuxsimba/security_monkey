@@ -30,6 +30,9 @@ RUN cp supervisor/security_monkey.conf /etc/supervisor/conf.d/security_monkey.co
 
 ADD ./config-deploy.py.noaws /usr/local/src/security_monkey/env-config/config-deploy.py
 
+ADD ./dockerize /usr/local/bin/dockerize
+
+RUN chmod 755 /usr/local/bin/dockerize
 
 COPY docker-entrypoint.sh /
 
