@@ -1,4 +1,4 @@
-# Author: Su Zhang 
+# Author: Su Zhang
 from random import randint
 from security_monkey.datastore import Account, Item, ItemRevision, ItemAudit, Technology, ItemComment
 from security_monkey import db
@@ -9,7 +9,7 @@ import requests
 import calendar
 import time
 
-# configurable stuff: account_id, technology_id
+ble stuff: account_id, technology_id
 # a configuration file config.txt should reside within the same folder as this code
 conf = open('config.txt', 'r')
 confs = conf.read().splitlines()
@@ -29,10 +29,10 @@ latest_revision_id=int(time.time())
 # e.g. curl -X GET localhost:1789/v1/policies/<classification-id>/tables/error/rows
 # Policy meta data should be put into the item comment, note or text
 # violation info will be put into the config json object
- 
 
-# in order to have this json object displayed correctly for external populated 
-# data objects, the data type of config in itemrevision (securitymonkey/datastore.py) should be changed to 
+
+# in order to have this json object displayed correctly for external populated
+# data objects, the data type of config in itemrevision (securitymonkey/datastore.py) should be changed to
 # string(512) from Json.
 
 request = 'http://'+host+':1789/v1/policies/classification/tables/'+policy+'/rows'
@@ -42,12 +42,15 @@ result =  requests.get(request)
 result_txt = result.text
 
 # Setup account, this may be changed to account association later
-# openstack_account = Account(active=True, third_party=False, name="openstack_congress", id=account_id)
-# db.session.add(openstack_account)
+openstack_account = Account(active=True, third_party=False, name="openstack_congress", id=account_id)
+db.session.add(openstack_account)
 
 # Setup security group technology. Similiar to account, once technology is setup, it does not need to be redefined.
-# os_sg = Technology(name="openstack_SG", id=tech_id)
-# db.session.add(os_sg)
+os_sg = Technology(name="openstack_SG", id=tech_id)
+db.session.add(os_sg)
+
+auditorsetting = AuditorSettings(tech_id=tech_id, account_id=account_id, id=account_id, disabled=False)
+db.session.add(auditorsetting)
 
 # Setup audit items and attach it to an item to be displayed
 # Be careful to associate latest revision id correctly for item and itemrevision.
@@ -55,7 +58,7 @@ item = Item(region=region, name='security group monitoring', tech_id=tech_id, ac
 
 db.session.add(item)
 
-auditItem = ItemAudit(score=score, issue=issue, notes=notes, justified=False, item_id=item_id)
+auditItem = ItemAudit(score=score, issue=issue, notes=notes, justified=False, item_id=item_id, auditor_setting_id=1)
 db.session.add(auditItem)
 
 revision = ItemRevision(active=True, item_id=item_id, id=latest_revision_id, config=result_txt)

@@ -1,0 +1,9 @@
+region:mirantis
+host:192.168.200.120
+policy:error
+risk_score:7
+issue:'VM security group'
+note:'Each entry 'User ID ', 'Email', 'VM Name', 'ID''
+tech_id: 1
+account_id: 1
+account_type_id: 1
