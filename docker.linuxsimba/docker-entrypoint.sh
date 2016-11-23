@@ -2,6 +2,8 @@
 
 set -e
 
+service nginx start
+
 cd /usr/local/src/security_monkey
 
 

@@ -6,7 +6,8 @@ RUN pip install --upgrade pip wheel jinja2
 
 RUN apt-get update && \
   apt-get -y -q install git build-essential python-dev libyaml-dev \
-    libffi-dev libpq-dev libxml2-dev libxmlsec1-dev supervisor libpq5
+    libffi-dev libpq-dev libxml2-dev libxmlsec1-dev supervisor libpq5 \
+    nginx
 
 
 RUN git clone --branch noaws https://github.com/linuxsimba/security_monkey /usr/local/src/security_monkey
@@ -39,6 +40,18 @@ RUN chmod 755 /usr/local/bin/dockerize
 COPY docker-entrypoint.sh /
 
 ENV SECURITY_MONKEY_SETTINGS /usr/local/src/security_monkey/env-config/config-deploy.py
+
+COPY securitymonkey_nginx.conf /etc/nginx/sites-available/securitymonkey
+
+RUN ln -s /etc/nginx/sites-available/securitymonkey /etc/nginx/sites-enabled/securitymonkey
+
+COPY create_ssl_key.sh /tmp/create_ssl_key.sh
+
+ADD static.tar /usr/local/src/security_monkey/security_monkey
+
+EXPOSE 443
+
+RUN bash /tmp/create_ssl_key.sh
 
 # for testing only
 # CMD tail -f /etc/hosts
